@@ -1,0 +1,139 @@
+[
+  {
+    "id": "starting_village",
+    "name": "新手村",
+    "description": "这是一个宁静的小村庄，是许多冒险者开始旅程的地方。村子里有几栋朴素的房屋，中央有一个古老的井。村民们友善而热情，总是乐于帮助新来的冒险者。",
+    "exits": {
+      "north": {
+        "target": "forest_entrance",
+        "description": "通往森林的小径"
+      },
+      "east": {
+        "target": "trading_post",
+        "description": "通往贸易站的道路"
+      },
+      "west": {
+        "target": "farmland",
+        "description": "通往农田的小路"
+      }
+    },
+    "is_safe": true,
+    "weather": "clear",
+    "ascii_art": "\n    🏠    🏠    🏠\n      \\   |   /\n       \\  |  /\n        \\ | /\n    🏠---🏛️---🏠\n        / | \\\n       /  |  \\\n      /   |   \\\n    🏠    🏠    🏠\n        ",
+    "items": []
+  },
+  {
+    "id": "forest_entrance",
+    "name": "森林入口",
+    "description": "茂密的森林在你面前展开，阳光透过树叶洒下斑驳的光影。你能听到鸟儿的歌声和远处传来的神秘声音。这里是冒险的开始，但也要小心森林中的危险。",
+    "exits": {
+      "south": {
+        "target": "starting_village",
+        "description": "回到村庄的路"
+      },
+      "north": {
+        "target": "deep_forest",
+        "description": "深入森林"
+      },
+      "east": {
+        "target": "crystal_cave",
+        "description": "通往水晶洞穴"
+      }
+    },
+    "is_safe": true,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  },
+  {
+    "id": "deep_forest",
+    "name": "森林深处",
+    "description": "你已经深入森林，周围的树木变得更加茂密，光线也变得昏暗。这里是各种魔法生物的栖息地，包括史莱姆、哥布林和其他危险的生物。小心前进！",
+    "exits": {
+      "south": {
+        "target": "forest_entrance",
+        "description": "返回森林入口"
+      },
+      "north": {
+        "target": "ancient_ruins",
+        "description": "通往古代遗迹"
+      }
+    },
+    "is_safe": false,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  },
+  {
+    "id": "trading_post",
+    "name": "贸易站",
+    "description": "这是一个繁忙的贸易站，商人们在这里交易各种货物。你可以看到来自世界各地的商品，从普通的日用品到珍贵的魔法物品应有尽有。",
+    "exits": {
+      "west": {
+        "target": "starting_village",
+        "description": "回到村庄"
+      },
+      "north": {
+        "target": "merchant_guild",
+        "description": "商人公会"
+      }
+    },
+    "is_safe": true,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  },
+  {
+    "id": "farmland",
+    "name": "农田",
+    "description": "广阔的农田延伸到地平线，金黄的麦浪在微风中摇摆。农夫们正在辛勤地工作，这里是村庄的主要食物来源。",
+    "exits": {
+      "east": {
+        "target": "starting_village",
+        "description": "回到村庄"
+      },
+      "north": {
+        "target": "windmill",
+        "description": "前往风车"
+      }
+    },
+    "is_safe": true,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  },
+  {
+    "id": "crystal_cave",
+    "name": "水晶洞穴",
+    "description": "这个洞穴的墙壁上长满了发光的水晶，散发出柔和的蓝光。洞穴深处传来神秘的回声，似乎隐藏着什么秘密。",
+    "exits": {
+      "west": {
+        "target": "forest_entrance",
+        "description": "离开洞穴"
+      },
+      "north": {
+        "target": "crystal_chamber",
+        "description": "深入洞穴"
+      }
+    },
+    "is_safe": false,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  },
+  {
+    "id": "ancient_ruins",
+    "name": "古代遗迹",
+    "description": "这些古老的石制建筑见证了一个失落文明的辉煌。藤蔓爬满了破损的墙壁，神秘的符文在微光中若隐若现。这里可能隐藏着强大的魔法物品，但也充满了危险。",
+    "exits": {
+      "south": {
+        "target": "deep_forest",
+        "description": "返回森林"
+      }
+    },
+    "is_safe": false,
+    "weather": "clear",
+    "ascii_art": "",
+    "items": []
+  }
+]

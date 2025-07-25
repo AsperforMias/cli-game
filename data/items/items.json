@@ -1,0 +1,99 @@
+[
+  {
+    "id": "health_potion",
+    "name": "生命药水",
+    "description": "恢复50点生命值的神奇药水",
+    "item_type": "consumable",
+    "base_price": 25,
+    "properties": {
+      "heal": 50
+    }
+  },
+  {
+    "id": "mana_potion",
+    "name": "魔法药水",
+    "description": "恢复30点魔法值的蓝色药水",
+    "item_type": "consumable",
+    "base_price": 20,
+    "properties": {
+      "mana": 30
+    }
+  },
+  {
+    "id": "iron_sword",
+    "name": "铁剑",
+    "description": "锋利的铁制长剑，是冒险者的好伙伴",
+    "item_type": "weapon",
+    "base_price": 100,
+    "properties": {
+      "attack": 10
+    }
+  },
+  {
+    "id": "steel_sword",
+    "name": "钢剑",
+    "description": "比铁剑更加坚固锋利的钢制剑",
+    "item_type": "weapon",
+    "base_price": 200,
+    "properties": {
+      "attack": 18
+    }
+  },
+  {
+    "id": "leather_armor",
+    "name": "皮甲",
+    "description": "轻便的皮制护甲，提供基础防护",
+    "item_type": "armor",
+    "base_price": 80,
+    "properties": {
+      "defense": 5
+    }
+  },
+  {
+    "id": "chain_mail",
+    "name": "锁子甲",
+    "description": "金属环制成的护甲，防护力不错",
+    "item_type": "armor",
+    "base_price": 150,
+    "properties": {
+      "defense": 10
+    }
+  },
+  {
+    "id": "magic_ring",
+    "name": "魔法戒指",
+    "description": "散发着微光的戒指，增强魔法能力",
+    "item_type": "accessory",
+    "base_price": 300,
+    "properties": {
+      "intelligence": 5,
+      "max_mp": 20
+    }
+  },
+  {
+    "id": "strength_ring",
+    "name": "力量戒指",
+    "description": "增强佩戴者力量的神奇戒指",
+    "item_type": "accessory",
+    "base_price": 300,
+    "properties": {
+      "attack": 8
+    }
+  },
+  {
+    "id": "mana_crystal",
+    "name": "魔法水晶",
+    "description": "闪闪发光的蓝色水晶，蕴含着魔法能量",
+    "item_type": "misc",
+    "base_price": 50,
+    "properties": {}
+  },
+  {
+    "id": "slime_gel",
+    "name": "史莱姆凝胶",
+    "description": "从史莱姆身上获得的粘性物质，可用于制作药水",
+    "item_type": "misc",
+    "base_price": 5,
+    "properties": {}
+  }
+]

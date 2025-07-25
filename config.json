@@ -1,0 +1,36 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 2222,
+    "password": "rpg2025",
+    "max_connections": 10
+  },
+  "game": {
+    "starting_scene": "starting_village",
+    "max_level": 50,
+    "exp_multiplier": 1.0,
+    "respawn_time": 30,
+    "save_interval": 300
+  },
+  "ai": {
+    "enabled": true,
+    "api_key": "",
+    "base_url": "https://api.openai.com/v1",
+    "model": "gpt-3.5-turbo",
+    "max_tokens": 200,
+    "temperature": 0.8,
+    "use_mock": true
+  },
+  "features": {
+    "combat_system": true,
+    "trading_system": true,
+    "quest_system": true,
+    "weather_system": false,
+    "day_night_cycle": false
+  },
+  "debug": {
+    "log_level": "INFO",
+    "save_chat_logs": false,
+    "enable_dev_commands": false
+  }
+}
