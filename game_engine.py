@@ -54,39 +54,89 @@ class GameEngine:
         self.input_buffer = ""
         self.command_history = []
         
+    async def process_input_data(self, data):
+        """处理从SSH会话接收到的输入数据"""
+        try:
+            # 处理字节数据
+            if isinstance(data, bytes):
+                text = data.decode('utf-8', errors='ignore')
+            else:
+                text = str(data)
+                
+            # 逐字符处理
+            for char in text:
+                if char == '\r' or char == '\n':
+                    if self.input_buffer.strip():
+                        await self.process_command(self.input_buffer.strip())
+                        self.command_history.append(self.input_buffer.strip())
+                        self.input_buffer = ""
+                        await self.renderer.draw_prompt(">>> ")
+                elif char == '\b' or char == '\x7f':  # 退格键
+                    if self.input_buffer:
+                        self.input_buffer = self.input_buffer[:-1]
+                elif ord(char) >= 32 and ord(char) <= 126:  # 可打印字符
+                    self.input_buffer += char
+        except Exception as e:
+            print(f"输入数据处理错误: {e}")
+    
     async def run(self):
         """游戏主循环"""
         try:
+            print("开始初始化游戏...")
             await self.initialize()
+            print("游戏初始化完成，开始主循环...")
             
             while self.running:
-                # 处理输入
-                await self.handle_input()
+                try:
+                    # 更新游戏状态
+                    await self.update()
+                    
+                    # 渲染画面
+                    await self.render()
+                    
+                    # 控制帧率
+                    await asyncio.sleep(0.1)
+                    
+                except Exception as e:
+                    print(f"游戏循环错误: {e}")
+                    await self.renderer.draw_message(f"游戏错误: {e}", "red")
+                    # 继续运行而不是退出
+                    await asyncio.sleep(1)
                 
-                # 更新游戏状态
-                await self.update()
-                
-                # 渲染画面
-                await self.render()
-                
-                # 控制帧率
-                await asyncio.sleep(0.05)
-                
+        except Exception as e:
+            print(f"游戏运行严重错误: {e}")
+            import traceback
+            traceback.print_exc()
+            try:
+                await self.renderer.draw_message(f"游戏启动失败: {e}", "red")
+                await asyncio.sleep(2)
+            except:
+                pass
         finally:
+            print("清理游戏资源...")
             await self.cleanup()
     
     async def initialize(self):
         """初始化游戏"""
-        # 设置终端
-        self.chan.write("\x1b[?25l")  # 隐藏光标
-        self.chan.write("\x1b[?1049h")  # 进入备用屏幕
-        self.chan.write("\x1b[2J\x1b[H")  # 清屏
-        
-        # 加载游戏数据
-        await self.load_game_data()
-        
-        # 显示欢迎界面
-        await self.show_welcome()
+        try:
+            print("设置终端...")
+            # 设置终端
+            self.chan.write("\x1b[?25l")  # 隐藏光标
+            self.chan.write("\x1b[?1049h")  # 进入备用屏幕
+            self.chan.write("\x1b[2J\x1b[H")  # 清屏
+            
+            print("加载游戏数据...")
+            # 加载游戏数据
+            await self.load_game_data()
+            
+            print("显示欢迎界面...")
+            # 显示欢迎界面
+            await self.show_welcome()
+            
+            print("游戏初始化完成")
+        except Exception as e:
+            print(f"初始化错误: {e}")
+            raise
     
     async def cleanup(self):
         """清理资源"""
@@ -110,7 +160,8 @@ class GameEngine:
     
     async def show_welcome(self):
         """显示欢迎界面"""
-        welcome_art = """
+        try:
+            welcome_art = """
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                                                                              ║
 ║   ████████╗██╗  ██╗███████╗    ██████╗ ██████╗  ██████╗     ██████╗  █████╗  ║
@@ -131,28 +182,19 @@ class GameEngine:
 ║  在游戏中输入 'help' 获取更多指令                                             ║
 ║                                                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
-"""
-        await self.renderer.draw_text(welcome_art, 0, 0)
-        await self.renderer.draw_prompt("请输入指令: ")
-    
-    async def handle_input(self):
-        """处理用户输入"""
-        try:
-            if self.chan.reader._buffer:
-                data = await self.chan.read(1024)
-                for char in data:
-                    if char == '\r' or char == '\n':
-                        if self.input_buffer.strip():
-                            await self.process_command(self.input_buffer.strip())
-                            self.command_history.append(self.input_buffer.strip())
-                            self.input_buffer = ""
-                    elif char == '\b' or char == '\x7f':  # 退格键
-                        if self.input_buffer:
-                            self.input_buffer = self.input_buffer[:-1]
-                    elif char.isprintable():
-                        self.input_buffer += char
-        except:
-            self.running = False
+
+请输入指令: """
+            
+            # 直接写入，不使用异步渲染器避免初始化问题
+            self.chan.write(welcome_art)
+            
+        except Exception as e:
+            print(f"显示欢迎界面错误: {e}")
+            # 如果ASCII艺术失败，使用简单文本
+            self.chan.write("\r\n=== CLI RPG Game ===\r\n")
+            self.chan.write("欢迎来到命令行RPG世界！\r\n")
+            self.chan.write("输入 'new' 创建角色，'help' 查看帮助\r\n")
+            self.chan.write("请输入指令: ")
     
     async def process_command(self, command_text: str):
         """处理命令"""

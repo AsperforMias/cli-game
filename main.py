@@ -76,27 +76,51 @@ class RPGGameSession(asyncssh.SSHServerSession):
             logger.info(f"Terminal size: {term_size[0]}x{term_size[1]}")
         return True
 
-    def session_started(self):
-        asyncio.create_task(self._run_game())
-
     def connection_made(self, chan):
         self.chan = chan
         self.game_engine = GameEngine(chan, self.ai_service)
 
+    def session_started(self):
+        asyncio.create_task(self._run_game())
+        
+    def data_received(self, data, datatype):
+        """处理接收到的数据"""
+        if self.game_engine:
+            # 将数据传递给游戏引擎处理
+            asyncio.create_task(self.game_engine.process_input_data(data))
+
     async def _run_game(self):
         """运行游戏主循环"""
         try:
+            print(f"新的游戏会话开始...")
             self.chan.set_write_buffer_limits(0)
+            
+            # 发送欢迎信息
+            self.chan.write("欢迎来到CLI RPG游戏！\n")
+            self.chan.write("正在初始化...\n")
+            
             await self.game_engine.run()
+            
         except (asyncssh.BreakReceived, asyncssh.TerminalSizeChanged):
-            pass
+            print("客户端断开连接")
         except Exception as e:
-            logger.error(f"Game session error: {e}")
+            print(f"游戏会话错误: {e}")
+            import traceback
+            traceback.print_exc()
+            try:
+                self.chan.write(f"\n游戏出错: {str(e)}\n")
+                self.chan.write("按任意键退出...\n")
+                await asyncio.sleep(2)
+            except:
+                pass
         finally:
+            print("游戏会话结束")
             if self.chan is not None:
                 try:
+                    self.chan.write("\n感谢游玩！再见！\n")
+                    await asyncio.sleep(1)
                     await self.chan.close()
-                except asyncssh.ConnectionLost:
+                except:
                     pass
 
 
